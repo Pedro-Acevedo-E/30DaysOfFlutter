@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,20 +13,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _users = List.filled(100, "kilo loco");
+  final _users = List.filled(500, "kilo loco");
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-          length: 2,
+          length: 3,
           child: Scaffold(
             backgroundColor: Colors.white70,
             appBar: AppBar(
-              bottom: const TabBar(tabs: [Text('List'), Text('Grid')]),
+              title: const TabBar(tabs: [Text('List'), Text('Laggy Grid'), Text('Better grid')]),
             ),
             body:
-            TabBarView(children: [_contentListView(), _contentGridView()]),
+            TabBarView(children: [_contentListView(), _contentGridView(), _contentResponsiveGridView()]),
           )),
     );
   }
@@ -51,22 +52,53 @@ class _MyAppState extends State<MyApp> {
   Widget _contentGridView() {
     return GridView.builder(
         itemCount: _users.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3), //number of cards per row (number of columns)
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5), //number of cards per row (number of columns)
         itemBuilder: (context, index) =>
-            Card(
+            Container(
               margin: const EdgeInsets.all(10), //control separation between cards
               color: Colors.blue.withOpacity(0.5), //Card background
                 child: GridTile(
-                    child: InkResponse(   //This allows you to tap a gridTile
-                      enableFeedback: true,
-                      child: Center(
-                        child: Text(_users[index]),
+                      child: InkResponse(
+                        child: Center(
+                          child: Text(index.toString()),
+                        ),
+                        onTap: () => debugPrint("hello $index"),
                       ),
-                      onTap: () => debugPrint("hello $index"),
-                    ),
                 )
             )
     );
+  }
+
+  Widget _contentResponsiveGridView() {
+    return ResponsiveGridList(
+      horizontalGridMargin: 10,
+      verticalGridMargin: 10,
+      //minItemWidth: 100,
+      minItemWidth: 80,
+      minItemsPerRow: 5,
+      children: userList(),
+    );
+  }
+
+  List<Widget> userList() {
+    List<Widget> list = <Widget>[];
+    for(var i = 0; i < _users.length; i++) {
+      list.add(
+          Container(
+            //margin: const EdgeInsets.all(10),
+            height: 80,
+              color: Colors.blue.withOpacity(0.5), //Card background
+              child: GestureDetector(
+                  child: Center(
+                    child: Text(i.toString()),
+                  ),
+                  onTap: () => debugPrint("hello $i"),
+                ),
+
+          )
+      );
+    }
+    return list;
   }
 }
 
