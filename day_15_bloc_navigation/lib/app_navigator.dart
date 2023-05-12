@@ -16,7 +16,7 @@ class AppNavigator extends StatelessWidget {
         pages: [
           const MaterialPage(child: PostsView()),
           if (post != null) MaterialPage(child: PostDetailsView(post: post)),
-          if (post?.title == "qui est esse")
+          if (post?.title == "qui est esse") //Test case
             MaterialPage(
               child: Scaffold(
                 appBar: AppBar(title: const Text("Some data")),   //Appbar interacts with navigator giving it a return button
@@ -32,3 +32,5 @@ class AppNavigator extends StatelessWidget {
     }));
   }
 }
+
+//To prevent overlapping of views add unique conditions to pages that are not shared between them
