@@ -15,7 +15,14 @@ class AppNavigator extends StatelessWidget {
       return Navigator(
         pages: [
           const MaterialPage(child: PostsView()),
-          if (post != null) MaterialPage(child: PostDetailsView(post: post))
+          if (post != null) MaterialPage(child: PostDetailsView(post: post)),
+          if (post?.title == "qui est esse")
+            MaterialPage(
+              child: Scaffold(
+                appBar: AppBar(title: const Text("Some data")),   //Appbar interacts with navigator giving it a return button
+                body: const Text("Some data"),
+              )
+          )
         ],
         onPopPage: (route, result) {
           BlocProvider.of<NavCubit>(context).popToPosts();
