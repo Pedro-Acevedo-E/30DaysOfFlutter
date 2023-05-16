@@ -60,7 +60,7 @@ class PokedexView extends StatelessWidget {
                     ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 6,
                     child: SizedBox(
                       width: 50,
                       height: 50,
@@ -71,7 +71,7 @@ class PokedexView extends StatelessWidget {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         onSubmitted: (text) =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?limit=24&offset=${int.parse(text)*24}")),
-                        decoration: InputDecoration(labelText: "Pages: ${(page.count~/24).toString()}"),
+                        decoration: InputDecoration(labelText: "Total Pages: ${(page.count~/24).toString()}"),
                       ),
                     )
                 ),

@@ -12,8 +12,9 @@ class PokemonDetailsView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pokedex'),
       ),
-      body: SingleChildScrollView(
-              child: Column(
+      body: ListView(
+              children: [
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 10),
@@ -67,8 +68,10 @@ class PokemonDetailsView extends StatelessWidget {
                       child: getStats(),
                     ),
                     const SizedBox(height: 20),
-                  ]),
-            ),
+                  ]
+                ),
+              ]
+      ),
     );
   }
 
@@ -130,7 +133,6 @@ class PokemonDetailsView extends StatelessWidget {
     }
     return ListView(children: list);
   }
-
 }
 
 extension StringExtension on String {
