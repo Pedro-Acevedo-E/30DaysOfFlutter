@@ -32,7 +32,13 @@ class PokedexView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.network(page.pokemonListings[index].imageUrl),
+                      SizedBox(
+                        height: 100,
+                          child: Image.network(page.pokemonListings[index].imageUrl, errorBuilder: (context, exception, stackTrace) {
+                            return const Text("Image not found");
+                          }),
+                      ),
+
                       Text(page.pokemonListings[index].name)
                     ],
                   ),
@@ -45,28 +51,38 @@ class PokedexView extends StatelessWidget {
           color: Colors.red,
           child: Row(
               children: [
-                const Spacer(),
-                IconButton(
-                  onPressed: page.previous != null ? () =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: page.previous!)) : () {} ,
-                  icon: const Icon(Icons.arrow_back),
+                const Spacer(flex: 1),
+                Expanded(
+                    flex: 6,
+                    child: IconButton(
+                      onPressed: page.previous != null ? () =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: page.previous!)) : () {} ,
+                      icon: const Icon(Icons.arrow_back),
+                    ),
                 ),
-                SizedBox(
-                  width: 50,
-                  child: TextField(
-                    controller: textEditingController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    onSubmitted: (text) =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?limit=24&offset=${int.parse(text)*24}")),
-                    decoration: const InputDecoration(labelText: "Page"),
-                  ),
+                Expanded(
+                  flex: 4,
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: TextField(
+                        controller: textEditingController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        onSubmitted: (text) =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?limit=24&offset=${int.parse(text)*24}")),
+                        decoration: InputDecoration(labelText: "Pages: ${(page.count~/24).toString()}"),
+                      ),
+                    )
                 ),
-                IconButton(
-                  onPressed: page.next != null ? () =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: page.next!)) : () {} ,
-                  icon: const Icon(Icons.arrow_forward),
+                Expanded(
+                  flex: 5,
+                  child: IconButton(
+                    onPressed: page.next != null ? () =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: page.next!)) : () {} ,
+                    icon: const Icon(Icons.arrow_forward),
+                  )
                 ),
-                const Spacer(),
+                const Spacer(flex: 1),
               ]
           ),
         ),

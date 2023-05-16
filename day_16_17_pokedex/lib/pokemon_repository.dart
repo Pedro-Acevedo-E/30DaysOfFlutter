@@ -23,6 +23,7 @@ class PokemonRepository {
   }
 
   Future<PokemonInfo> getPokemonDetails(int id) async {
+    print("Getting pokemon details of $id}");
     final detailsData = await client.get(Uri.parse("https://pokeapi.co/api/v2/pokemon/$id/"));
     final json = jsonDecode(detailsData.body);
     final data = PokemonInfo.fromJson(json);
@@ -30,8 +31,8 @@ class PokemonRepository {
     return data;
   }
 
-  Future<Map<String, dynamic>> getSpeciesInfo(int id) async {
-    final detailsData = await client.get(Uri.parse("https://pokeapi.co/api/v2/pokemon-species/$id/"));
+  Future<Map<String, dynamic>> getSpeciesInfo(String request) async {
+    final detailsData = await client.get(Uri.parse(request));
     final json = jsonDecode(detailsData.body);
 
     return json;

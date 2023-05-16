@@ -9,8 +9,9 @@ class PokemonInfo {
   final String name;
   final List<PokemonStats> stats;
   final List<PokemonType> types;
-  late final String flavorText;
-  late final String genera;
+  String? flavorText;
+  String? genera;
+  final PokeDetails species;
 
   Color getColor(String type) {
       switch (type) {
@@ -92,90 +93,10 @@ class PokemonInfo {
           }
       }
   }
-  Color get typeColor {
-    switch (types[0].type.name) {
-      case "grass":
-        {
-          return Colors.green;
-        }
-      case "fire":
-        {
-          return Colors.red;
-        }
-      case "water":
-        {
-          return Colors.blue;
-        }
-      case "bug":
-        {
-          return const Color.fromRGBO(167,183,35, 1);
-        }
-      case "normal":
-        {
-          return const Color.fromRGBO(176, 172, 136, 1);
-        }
-      case "poison":
-        {
-          return const Color.fromRGBO(164, 62, 158, 1);
-        }
-      case "fighting":
-        {
-          return const Color.fromRGBO(193, 34, 57, 1);
-        }
-      case "flying":
-        {
-          return const Color.fromRGBO(168, 145, 236, 1);
-        }
-      case "ground":
-        {
-          return const Color.fromRGBO(222, 193, 107, 1);
-        }
-      case "rock":
-        {
-          return const Color.fromRGBO(182, 158, 49, 1);
-        }
-      case "ghost":
-        {
-          return const Color.fromRGBO(112,85,155, 1);
-        }
-      case "steel":
-        {
-          return const Color.fromRGBO(183,185,208, 1);
-        }
-      case "electric":
-        {
-          return const Color.fromRGBO(249,207,48, 1);
-        }
-      case "psychic":
-        {
-          return const Color.fromRGBO(251,85,132, 1);
-        }
-      case "ice":
-        {
-          return const Color.fromRGBO(154,214,223, 1);
-        }
-      case "dragon":
-        {
-          return const Color.fromRGBO(112,55,255, 1);
-        }
-      case "dark":
-        {
-          return const Color.fromRGBO(117,87,76, 1);
-        }
-      case "fairy":
-        {
-          return const Color.fromRGBO(230,158,172, 1);
-        }
-      default:
-        {
-          return Colors.grey;
-        }
-    }
-  }
 
   String get imageUrl => 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png';
 
-  PokemonInfo({required this.abilities, required this.types, required this.height, required this.id, required this.moves, required this.name, required this.stats, });
+  PokemonInfo({required this.abilities, required this.types, required this.height, required this.id, required this.moves, required this.name, required this.stats, required this.species});
 
   factory PokemonInfo.fromJson(Map<String, dynamic> json) {
     final abilities = (json['abilities'] as List)
@@ -193,24 +114,35 @@ class PokemonInfo {
     final types = (json['types'] as List)
         .map((listingJson) => PokemonType.fromJson(listingJson))
         .toList();
+    final species = PokeDetails.fromJson(json['species']);
 
-    return PokemonInfo(abilities: abilities, types: types, height: height, id: id, moves: moves, name: name, stats: stats);
+    return PokemonInfo(abilities: abilities, types: types, height: height, id: id, moves: moves, name: name, stats: stats, species: species);
   }
 
   void setSpeciesInfo(Map<String, dynamic> json) {
     final flavorTextEntries = json['flavor_text_entries'] as List;
-    final flavorText = flavorTextEntries[0]['flavor_text'];
-    this.flavorText = flavorText;
+    if(flavorTextEntries.isNotEmpty) {
+      var flavorText = "";
+      for(var i = 0; i < flavorTextEntries.length; i++) {
+        final entry = PokeDetails.fromJson(flavorTextEntries[i]['language']);
+        if(entry.name == 'en') {
+          flavorText = flavorTextEntries[i]['flavor_text'].replaceAll("\n", " ").replaceAll("\f", " ");
+        }
+      }
+      this.flavorText = flavorText.replaceAll("\f", " ");
+    } 
 
     final generaEntries = json['genera'] as List;
-    var genera = "";
-    for(var i = 0; i < generaEntries.length; i++){
-      final entry = PokeDetails.fromJson(generaEntries[i]['language']);
-      if (entry.name == 'en'){
-        genera = generaEntries[i]['genus'];
+    if(generaEntries.isNotEmpty) {
+      var genera = "";
+      for (var i = 0; i < generaEntries.length; i++) {
+        final entry = PokeDetails.fromJson(generaEntries[i]['language']);
+        if (entry.name == 'en') {
+          genera = generaEntries[i]['genus'];
+        }
       }
+      this.genera = genera;
     }
-    this.genera = genera;
   }
 }
 

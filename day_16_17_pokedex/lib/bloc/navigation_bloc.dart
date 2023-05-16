@@ -17,7 +17,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       if (event is GoToDetailsEvent) {
         emit(LoadingPokemon());
         final pokemonResponse = await _pokemonRepository.getPokemonDetails(event.id);
-        final speciesInfo = await _pokemonRepository.getSpeciesInfo(event.id);
+        final speciesInfo = await _pokemonRepository.getSpeciesInfo(pokemonResponse.species.url);
         pokemonResponse.setSpeciesInfo(speciesInfo);
         navStates.add(PokemonDetails(pokemon: pokemonResponse));
         emit(PokemonDetails(pokemon: pokemonResponse));
