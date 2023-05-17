@@ -1,0 +1,40 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "types": "Types ",
+  "@types": {
+    "description": "Types title"
+  },
+  "pokedex_number": "Pokedex Number: {value}",
+  "@pokedex_number": {
+    "description": "Pokedex Number title",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "123"
+      }
+    }
+  },
+  "pokemon_height": "Height: {value}m",
+  "@pokemon_height": {
+    "description": "Pokemon Height title",
+    "placeholders": {
+      "value": {
+        "type": "double",
+        "format": "decimalPattern",
+        "example": "1.6",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      }
+    }
+  },
+  "pokemon_abilities": "Abilities: ",
+  "@pokemon_abilities": {
+    "description": "Pokemon Abilities Title"
+  }
+
+}

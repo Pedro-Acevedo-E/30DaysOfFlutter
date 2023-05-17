@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../models/pokemon_info.dart';
-import '../models/pokemon_page_response.dart';
 import '../pokemon_repository.dart';
+import 'navigation_event.dart';
+import 'navigation_state.dart';
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   final _pokemonRepository = PokemonRepository();
@@ -38,44 +37,4 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       emit(PokemonPageLoadFailed(error: e));
     }
   }
-}
-
-
-
-abstract class NavigationEvent {}
-
-class PreviousEvent extends NavigationEvent {}
-
-class GoToDetailsEvent extends NavigationEvent {
-  final int id;
-
-  GoToDetailsEvent({required this.id});
-}
-
-class GoToPageEvent extends NavigationEvent {
-  final String page;
-
-  GoToPageEvent({required this.page});
-}
-
-abstract class NavigationState {}
-
-class LoadingPokemon extends NavigationState {}
-
-class PokemonPageLoadFailed extends NavigationState {
-  final Object error;
-
-  PokemonPageLoadFailed({required this.error});
-}
-
-class PokemonDetails extends NavigationState {
-  final PokemonInfo pokemon;
-
-  PokemonDetails({required this.pokemon});
-}
-
-class PokemonList extends NavigationState {
-  final PokemonPageResponse pageResponse;
-
-  PokemonList({required this.pageResponse});
 }

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/navigation_bloc.dart';
+import 'bloc/navigation_event.dart';
+import 'bloc/navigation_state.dart';
 
 class AppNavigator extends StatelessWidget {
   const AppNavigator({super.key});

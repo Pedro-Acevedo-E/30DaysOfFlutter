@@ -1,0 +1,7 @@
+{
+  "helloWorld": "¡Hola Mundo!",
+  "types": "Tipos ",
+  "pokedex_number": "Numero de Pokedex: {value}",
+  "pokemon_height": "Altura: {value}m",
+  "pokemon_abilities": "Habilidades: "
+}

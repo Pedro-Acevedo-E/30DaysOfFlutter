@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:day_16_17_pokedex/app_localizations_context.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../models/pokemon_info.dart';
 
 class PokemonDetailsView extends StatelessWidget {
@@ -12,49 +15,56 @@ class PokemonDetailsView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pokedex'),
       ),
-      body: ListView(
-              children: [
-                Column(
+      body: Container(
+        color: pokemon.getColor(pokemon.types[0].type.name).withOpacity(0.2),
+        child: ListView(
+            children: [
+              Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 10),
                     Text(pokemon.name.capitalize(), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                    Image.network(pokemon.imageUrl),
+                    CachedNetworkImage(
+                      imageUrl: pokemon.imageUrl,
+                      placeholder: (context, url) => LoadingAnimationWidget.bouncingBall(color: Colors.red.withOpacity(0.6), size: 70),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
                     Text(pokemon.genera != null ? pokemon.genera! : "", style: const TextStyle(fontSize: 20)),
                     const SizedBox(height: 20),
-                    getTypes(),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        const Spacer(flex: 3),
-                        Expanded(
-                          flex: 20,
-                          child: Text(pokemon.flavorText != null ? pokemon.flavorText! : "", style: const TextStyle(fontSize: 20))
-                        ),
-                        const Spacer(flex: 1),
-                      ]
-                    ),
+                    getTypes(context),
                     const SizedBox(height: 20),
                     Row(
                         children: [
-                          const Spacer(flex: 8),
+                          const Spacer(flex: 1),
                           Expanded(
                               flex: 20,
-                              child: Text("Pokedex number: ${pokemon.id.toString()}", style: const TextStyle(fontSize: 20))
-                          ),
-                          Expanded(
-                              flex: 20,
-                              child: Text("Height: ${(pokemon.height / 10).toString()}m", style: const TextStyle(fontSize: 20))
+                              child: Text(pokemon.flavorText != null ? pokemon.flavorText! : "", style: const TextStyle(fontSize: 20))
                           ),
                           const Spacer(flex: 1),
                         ]
                     ),
                     const SizedBox(height: 20),
-                    getAbilities(),
+                    Row(
+                        children: [
+                          const Spacer(flex: 5),
+                          Expanded(
+                              flex: 25,
+                              child: Text(context.loc.pokedex_number(pokemon.id), style: const TextStyle(fontSize: 20))
+                          ),
+                          const Spacer(flex: 1),
+                          Expanded(
+                              flex: 20,
+                              child: Text(context.loc.pokemon_height(pokemon.height / 10), style: const TextStyle(fontSize: 20))
+                          ),
+                          const Spacer(flex: 1),
+                        ]
+                    ),
+                    const SizedBox(height: 20),
+                    getAbilities(context),
                     const SizedBox(height: 20),
                     const Text("Moves: ", style: TextStyle(fontSize: 20)),
                     Container(
-                      decoration: const BoxDecoration(color: Color.fromRGBO(193, 199, 195, 1), borderRadius: BorderRadius.all(Radius.circular(20))),
+                      decoration: BoxDecoration(color: pokemon.getColor(pokemon.types[0].type.name).withOpacity(0.5), borderRadius: BorderRadius.all(Radius.circular(20))),
                       height: 200,
                       width: 300,
                       child: getMoves(),
@@ -62,23 +72,24 @@ class PokemonDetailsView extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text("Stats: ", style: TextStyle(fontSize: 20)),
                     Container(
-                      decoration: const BoxDecoration(color: Color.fromRGBO(193, 199, 195, 1), borderRadius: BorderRadius.all(Radius.circular(20))),
+                      decoration: BoxDecoration(color: pokemon.getColor(pokemon.types[0].type.name).withOpacity(0.5), borderRadius: BorderRadius.all(Radius.circular(20))),
                       height: 150,
                       width: 300,
                       child: getStats(),
                     ),
                     const SizedBox(height: 20),
                   ]
-                ),
-              ]
-      ),
+              ),
+            ]
+        )),
+      
     );
   }
 
-  Widget getTypes() {
+  Widget getTypes(BuildContext context) {
     List<Widget> list = [];
     list.add(const Spacer());
-    list.add(const Text("Types: ", style: TextStyle(fontSize: 20)));
+    list.add(Text(context.loc.types, style: const TextStyle(fontSize: 20)));
     for(var i = 0; i < pokemon.types.length; i++) {
       list.add(
           Container(
@@ -92,10 +103,10 @@ class PokemonDetailsView extends StatelessWidget {
     return Row(children: list);
   }
 
-  Widget getAbilities() {
+  Widget getAbilities(BuildContext context) {
     List<Widget> list = [];
     list.add(const Spacer());
-    list.add(const Text("Abilities: ", style: TextStyle(fontSize: 20)));
+    list.add(Text(context.loc.pokemon_abilities, style: const TextStyle(fontSize: 20)));
     for(var i = 0; i < pokemon.abilities.length; i++) {
       list.add(
           SizedBox(
@@ -126,12 +137,12 @@ class PokemonDetailsView extends StatelessWidget {
     for(var i = 0; i < pokemon.stats.length; i++) {
       list.add(
           SizedBox(
-              width: 110,
+              width: 400,
               child: Center(child: Text("${pokemon.stats[i].stat.name}: ${pokemon.stats[i].baseStat}", style: const TextStyle(fontSize: 20)))
           )
       );
     }
-    return ListView(children: list);
+    return Column(children: list);
   }
 }
 

@@ -2,8 +2,11 @@ import 'package:day_16_17_pokedex/models/pokemon_page_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../bloc/navigation_bloc.dart';
+import '../bloc/navigation_event.dart';
+import '../bloc/navigation_state.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class PokedexView extends StatelessWidget {
   final PokemonPageResponse page;
@@ -17,7 +20,7 @@ class PokedexView extends StatelessWidget {
       return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: const Text('Pokedex'),
+          title: const Text("Pokedex"),
         ),
         body: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -34,9 +37,11 @@ class PokedexView extends StatelessWidget {
                     children: [
                       SizedBox(
                         height: 100,
-                          child: Image.network(page.pokemonListings[index].imageUrl, errorBuilder: (context, exception, stackTrace) {
-                            return const Text("Image not found");
-                          }),
+                          child: CachedNetworkImage(
+                            imageUrl: page.pokemonListings[index].imageUrl,
+                            placeholder: (context, url) => LoadingAnimationWidget.bouncingBall(color: Colors.red.withOpacity(0.6), size: 70),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          ),
                       ),
 
                       Text(page.pokemonListings[index].name)
@@ -61,22 +66,10 @@ class PokedexView extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 6,
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: TextField(
-                        controller: textEditingController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        onSubmitted: (text) =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?limit=24&offset=${int.parse(text)*24}")),
-                        decoration: InputDecoration(labelText: "Total Pages: ${(page.count~/24).toString()}"),
-                      ),
-                    )
+                  child:  pageSelector(page.count, context),
                 ),
                 Expanded(
-                  flex: 5,
+                  flex: 6,
                   child: IconButton(
                     onPressed: page.next != null ? () =>  BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: page.next!)) : () {} ,
                     icon: const Icon(Icons.arrow_forward),
@@ -88,5 +81,38 @@ class PokedexView extends StatelessWidget {
         ),
       );
     });
+  }
+
+  Widget pageSelector(int count, BuildContext context) {
+    final pages = List.generate(count~/24, (int index) => index);
+    return PopupMenuButton(
+        color: Colors.red.withOpacity(0.8),
+        constraints: const BoxConstraints(maxHeight: 300, minWidth: 100),
+        initialValue: 1,
+        onSelected: (int item) {
+          BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?limit=24&offset=${(item)*24}"));
+        },
+        itemBuilder: (BuildContext context) => pageItems(pages),
+        child: const Icon(Icons.reorder)
+    );
+
+  }
+
+  List<PopupMenuItem<int>> pageItems(List<int> items) {
+    List<PopupMenuItem<int>> list = [];
+    for(var i = 0; i < items.length; i++) {
+      list.add(
+          PopupMenuItem<int>(
+            value: items[i],
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Text("Page ${items[i] + 1}"),
+            ),
+          )
+      );
+    }
+    return list;
   }
 }
