@@ -2,7 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:day_16_17_pokedex/app_localizations_context.dart';
 import 'package:day_16_17_pokedex/utils/type_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../../navigation/navigation_bloc.dart';
+import '../../../navigation/navigation_event.dart';
+import '../../../utils/constants/constants.dart';
 import '../models/pokemon_info.dart';
 
 class PokemonDetailsView extends StatelessWidget {
@@ -14,7 +18,13 @@ class PokemonDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: const Text('Pokedex'),
+        title: Row(children: [
+          IconButton(
+              onPressed: () => BlocProvider.of<NavigationBloc>(context).add(PreviousEvent()),
+              icon: const Icon(Icons.arrow_back),
+          ),
+          const Text(appTitle),
+        ]),
       ),
       body: Container(
         color: TypeColor.getColor(pokemon.types[0].type.name).withOpacity(0.2),

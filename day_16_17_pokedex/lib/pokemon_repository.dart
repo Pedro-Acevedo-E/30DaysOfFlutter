@@ -13,10 +13,13 @@ class PokemonRepository {
       final json = jsonDecode(response.body);
       final data = PokemonPageResponse.fromJson(json);
 
+      /*
       for (var i = 0; i < data.pokemonListings.length; i++) {
         final detailsData = await getPokemonDetails(data.pokemonListings[i].id);
         data.pokemonListings[i].type = detailsData.types[0].type.name;
       }
+
+       */
 
       return data;
   }

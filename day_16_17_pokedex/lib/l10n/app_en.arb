@@ -7,6 +7,10 @@
   "@types": {
     "description": "Types title"
   },
+  "page": "Page: ",
+  "@types": {
+    "description": "Page title"
+  },
   "pokedex_number": "Pokedex Number: {value}",
   "@pokedex_number": {
     "description": "Pokedex Number title",

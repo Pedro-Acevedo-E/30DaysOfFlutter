@@ -15,7 +15,17 @@ class AppNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationBloc, NavigationState>(builder: (context, state) {
-      return Navigator(
+      if (state is LoadingPokemon) { return const LoadingView(); }
+      if (state is PokemonDetails) { return PokemonDetailsView(pokemon: state.pokemon); }
+      if (state is PokemonList) { return PokedexView(page: state.pageResponse); }
+      if (state is PokemonPageLoadFailed) { return ErrorView(error: state.error); }
+      else { return const InitialView();}
+    });
+  }
+}
+
+/*
+return Navigator(
         pages: [
           const MaterialPage(child: InitialView()),
           if (state is LoadingPokemon) const MaterialPage(child: LoadingView()),
@@ -28,6 +38,4 @@ class AppNavigator extends StatelessWidget {
           return route.didPop(result);
         },
       );
-    });
-  }
-}
+ */
