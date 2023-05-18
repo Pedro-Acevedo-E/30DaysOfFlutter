@@ -1,10 +1,10 @@
-import 'package:day_16_17_pokedex/models/pokemon_page_response.dart';
+import 'package:day_16_17_pokedex/utils/type_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/navigation_bloc.dart';
-import '../bloc/navigation_event.dart';
-import '../bloc/navigation_state.dart';
+import '../../../navigation/navigation_bloc.dart';
+import '../../../navigation/navigation_event.dart';
+import '../../../navigation/navigation_state.dart';
+import '../models/pokemon_page_response.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -30,7 +30,7 @@ class PokedexView extends StatelessWidget {
               onTap: () => BlocProvider.of<NavigationBloc>(context).add(GoToDetailsEvent(id: page.pokemonListings[index].id)),
               child: Card(
                 margin: const EdgeInsets.all(5),
-                color: page.pokemonListings[index].typeColor.withOpacity(0.5),
+                color: TypeColor.getColor(page.pokemonListings[index].type).withOpacity(0.5),
                 child: GridTile(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +90,7 @@ class PokedexView extends StatelessWidget {
         constraints: const BoxConstraints(maxHeight: 300, minWidth: 100),
         initialValue: 1,
         onSelected: (int item) {
-          BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?limit=24&offset=${(item)*24}"));
+          BlocProvider.of<NavigationBloc>(context).add(GoToPageEvent(page: "https://pokeapi.co/api/v2/pokemon/?offset=${(item)*24}&limit=24"));
         },
         itemBuilder: (BuildContext context) => pageItems(pages),
         child: const Icon(Icons.reorder)

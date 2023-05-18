@@ -1,14 +1,13 @@
-import 'package:day_16_17_pokedex/views/error_view.dart';
-import 'package:day_16_17_pokedex/views/load_pokemon_view.dart';
-import 'package:day_16_17_pokedex/views/loading_view.dart';
-import 'package:day_16_17_pokedex/views/pokedex_view.dart';
-import 'package:day_16_17_pokedex/views/pokemon_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'bloc/navigation_bloc.dart';
-import 'bloc/navigation_event.dart';
-import 'bloc/navigation_state.dart';
+import '../navigation/navigation_bloc.dart';
+import '../navigation/navigation_event.dart';
+import '../navigation/navigation_state.dart';
+import 'modules/pokemon/views/error_view.dart';
+import 'modules/pokemon/views/load_pokemon_view.dart';
+import 'modules/pokemon/views/loading_view.dart';
+import 'modules/pokemon/views/pokedex_view.dart';
+import 'modules/pokemon/views/pokemon_details_view.dart';
 
 class AppNavigator extends StatelessWidget {
   const AppNavigator({super.key});

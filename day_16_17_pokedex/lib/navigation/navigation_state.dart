@@ -1,5 +1,6 @@
-import '../models/pokemon_info.dart';
-import '../models/pokemon_page_response.dart';
+
+import '../modules/pokemon/models/pokemon_info.dart';
+import '../modules/pokemon/models/pokemon_page_response.dart';
 
 abstract class NavigationState {}
 

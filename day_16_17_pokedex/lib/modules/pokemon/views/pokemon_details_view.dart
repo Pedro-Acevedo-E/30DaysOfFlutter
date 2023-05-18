@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:day_16_17_pokedex/app_localizations_context.dart';
+import 'package:day_16_17_pokedex/utils/type_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../models/pokemon_info.dart';
@@ -16,7 +17,7 @@ class PokemonDetailsView extends StatelessWidget {
         title: const Text('Pokedex'),
       ),
       body: Container(
-        color: pokemon.getColor(pokemon.types[0].type.name).withOpacity(0.2),
+        color: TypeColor.getColor(pokemon.types[0].type.name).withOpacity(0.2),
         child: ListView(
             children: [
               Column(
@@ -64,7 +65,7 @@ class PokemonDetailsView extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text("Moves: ", style: TextStyle(fontSize: 20)),
                     Container(
-                      decoration: BoxDecoration(color: pokemon.getColor(pokemon.types[0].type.name).withOpacity(0.5), borderRadius: BorderRadius.all(Radius.circular(20))),
+                      decoration: BoxDecoration(color: TypeColor.getColor(pokemon.types[0].type.name).withOpacity(0.5), borderRadius: const BorderRadius.all(Radius.circular(20))),
                       height: 200,
                       width: 300,
                       child: getMoves(),
@@ -72,7 +73,7 @@ class PokemonDetailsView extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Text("Stats: ", style: TextStyle(fontSize: 20)),
                     Container(
-                      decoration: BoxDecoration(color: pokemon.getColor(pokemon.types[0].type.name).withOpacity(0.5), borderRadius: BorderRadius.all(Radius.circular(20))),
+                      decoration: BoxDecoration(color: TypeColor.getColor(pokemon.types[0].type.name).withOpacity(0.5), borderRadius: const BorderRadius.all(Radius.circular(20))),
                       height: 150,
                       width: 300,
                       child: getStats(),
@@ -93,8 +94,8 @@ class PokemonDetailsView extends StatelessWidget {
     for(var i = 0; i < pokemon.types.length; i++) {
       list.add(
           Container(
-              width: 100,
-              color: pokemon.getColor(pokemon.types[i].type.name),
+              width: 80,
+              color: TypeColor.getColor(pokemon.types[i].type.name),
               child: Center(child: Text(pokemon.types[i].type.name, style: const TextStyle(fontSize: 20)))
           )
       );
@@ -110,7 +111,7 @@ class PokemonDetailsView extends StatelessWidget {
     for(var i = 0; i < pokemon.abilities.length; i++) {
       list.add(
           SizedBox(
-              width: 110,
+              width: 100,
               child: Center(child: Text(pokemon.abilities[i].ability.name, style: const TextStyle(fontSize: 20)))
           )
       );
