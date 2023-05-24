@@ -6,6 +6,7 @@ import '../../../navigation/navigation_state.dart';
 import '../../../utils/constants/constants.dart';
 import '../../../utils/widgets/botom_navigation_container.dart';
 import '../models/pokemon_page_response.dart';
+import '../presenter/pokemon_favorites_bloc.dart';
 
 class PokedexView extends StatelessWidget {
   final PokemonPageResponse page;
@@ -19,7 +20,13 @@ class PokedexView extends StatelessWidget {
       return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title:  const Text(appTitle),
+          title: Row(children: [
+            const Text(appTitle),
+            IconButton(
+              onPressed: () => BlocProvider.of<PokemonFavoritesBloc>(context).add(GetFavorites()),
+              icon: const Icon(Icons.monitor_heart),
+            ),
+          ]),
         ),
         body: pokedexGrid(page, context),
         bottomNavigationBar: bottomNavigationContainer(page, context),

@@ -2,6 +2,8 @@ import 'package:day_16_17_pokedex/app_localizations_context.dart';
 import 'package:day_16_17_pokedex/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../builders/navigation_builder.dart';
+
 Widget pageSelector(int count, BuildContext context) {
   final pages = List.generate(count~/paginationNumber, (int index) => index);
   return PopupMenuButton(

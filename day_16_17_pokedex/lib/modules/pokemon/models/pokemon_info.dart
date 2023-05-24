@@ -2,10 +2,10 @@ import 'package:day_16_17_pokedex/modules/pokemon/models/pokemon_ability.dart';
 import 'package:day_16_17_pokedex/modules/pokemon/models/pokemon_details.dart';
 import 'package:day_16_17_pokedex/modules/pokemon/models/pokemon_stats.dart';
 import 'package:day_16_17_pokedex/modules/pokemon/models/pokemon_type.dart';
-
+import 'package:hive/hive.dart';
 import 'move_info.dart';
 
-class PokemonInfo {
+class PokemonInfo extends HiveObject {
   final List<PokemonAbility> abilities;
   final int height;
   final int id;

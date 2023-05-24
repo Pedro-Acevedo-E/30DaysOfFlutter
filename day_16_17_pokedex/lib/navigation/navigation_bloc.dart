@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../pokemon_repository.dart';
+import '../modules/pokemon/iterator/pokemon_repository.dart';
 import 'navigation_event.dart';
 import 'navigation_state.dart';
 

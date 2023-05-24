@@ -8,6 +8,7 @@ import '../../../navigation/navigation_bloc.dart';
 import '../../../navigation/navigation_event.dart';
 import '../../../utils/constants/constants.dart';
 import '../models/pokemon_info.dart';
+import '../presenter/pokemon_favorites_bloc.dart';
 
 class PokemonDetailsView extends StatelessWidget {
   final PokemonInfo pokemon;
@@ -24,6 +25,10 @@ class PokemonDetailsView extends StatelessWidget {
               icon: const Icon(Icons.arrow_back),
           ),
           const Text(appTitle),
+          IconButton(
+            onPressed: () => BlocProvider.of<PokemonFavoritesBloc>(context).add(AddToFavorites(pokemon: pokemon)),
+            icon: const Icon(Icons.heart_broken),
+          ),
         ]),
       ),
       body: Container(

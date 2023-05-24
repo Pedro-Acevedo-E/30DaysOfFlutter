@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'modules/pokemon/models/pokemon_info.dart';
 import 'modules/pokemon/models/pokemon_page_response.dart';
-
+/*
 class PokemonRepository {
   final baseUrl = 'pokeapi.co';
   final client = http.Client();
@@ -40,3 +40,5 @@ class PokemonRepository {
     return json;
   }
 }
+
+ */
