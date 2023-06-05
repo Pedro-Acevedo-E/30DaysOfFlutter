@@ -63,6 +63,15 @@ class LoginForm extends StatelessWidget {
                             prefixIcon: Icon(Icons.lock),
                           ),
                         ),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: loginFormBloc.confirmPassword,
+                          suffixButton: SuffixButton.obscureText,
+                          autofillHints: const [AutofillHints.password],
+                          decoration: const InputDecoration(
+                            labelText: 'Confirm Password',
+                            prefixIcon: Icon(Icons.lock),
+                          ),
+                        ),
                         SizedBox(
                           width: 250,
                           child: CheckboxFieldBlocBuilder(

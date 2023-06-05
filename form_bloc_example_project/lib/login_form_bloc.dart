@@ -21,8 +21,26 @@ class LoginFormBloc extends FormBloc<String, String> {
   final password = TextFieldBloc(
     validators: [
       FieldBlocValidators.required,
+      FieldBlocValidators.passwordMin6Chars,
     ],
   );
+
+  final confirmPassword = TextFieldBloc(
+    validators: [
+      FieldBlocValidators.required,
+    ],
+  );
+
+  Validator<String> _confirmPassword(
+      TextFieldBloc passwordTextFieldBloc,
+      ) {
+    return (String confirmPassword) {
+      if (confirmPassword == passwordTextFieldBloc.value) {
+        return null;
+      }
+      return 'Must be equal to password';
+    };
+  }
 
   final showSuccessResponse = BooleanFieldBloc();
 
@@ -31,9 +49,14 @@ class LoginFormBloc extends FormBloc<String, String> {
       fieldBlocs: [
         email,
         password,
+        confirmPassword,
         showSuccessResponse,
       ],
     );
+
+    confirmPassword
+        ..addValidators([_confirmPassword(password)])
+        ..subscribeToFieldBlocs([password]);
   }
 
   /*
