@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     controller = WebViewController()
-      ..loadRequest(Uri.parse('https://flutter.dev'));
+      ..loadRequest(Uri.parse('https://www.solbeautyandcare.com.mx/es'));
     super.initState();
   }
 //WebViewWidget(controller: controller)

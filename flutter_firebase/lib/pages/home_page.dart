@@ -1,6 +1,8 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../colors.dart';
 import '../services/firebase_service.dart';
 
 class Home extends StatefulWidget {
@@ -11,9 +13,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseRemoteConfig.onConfigUpdated.listen((event) async {
+      await firebaseRemoteConfig.fetchAndActivate();
+      setState(() {});
+    });
+    firebaseRemoteConfig.fetchAndActivate();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: background(firebaseRemoteConfig.getString("background_home")),
       appBar: AppBar(title: const Text('Firebase')),
       body: FutureBuilder(
         future: getPeople(),

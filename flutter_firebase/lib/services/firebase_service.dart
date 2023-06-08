@@ -30,6 +30,7 @@ Future<void> deletePeople(String id) async {
   await db.collection('people').doc(id).delete();
 }
 
+
 /*
 Example
 
