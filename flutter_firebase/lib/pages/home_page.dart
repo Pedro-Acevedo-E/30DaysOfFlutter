@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: background(firebaseRemoteConfig.getString("background_home")),
+      backgroundColor: background(firebaseRemoteConfig.getString("RGB")),
       appBar: AppBar(title: const Text('Firebase')),
       body: FutureBuilder(
         future: getPeople(),
